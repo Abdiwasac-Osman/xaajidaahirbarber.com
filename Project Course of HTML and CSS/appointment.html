@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="IMAGES/Logos.png"  type="IMAGES.xicon"  width="250px" height="200px">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Form - Xaaji Daahir Barber</title>
+    <link rel="stylesheet" href="STYLE OF CSS/styles.css">
+    <script defer src="script.js"></script>
+</head>
+
+<header class="header">
+    <nav class="navbar">
+        <a href="#">
+            <img src="IMAGES/logo.png" height="85px" width="180px" />
+        </a>
+        <ul class="nav-links">
+            <li class="active"><a href="index.html">Home</a></li>
+            <li class="active"><a href="services.html">Services</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li class="active"><a href="appointment.html">Booking Appointment</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<body>
+    <div class="form-container">
+        <h2>Book Your Appointment</h2>
+        <p1>We’re excited to help you look your best! Choose your preferred service, select a date and time, and send us
+            a message.
+        </p1>
+        <form id="bookingForm" method="get" target="_blank">
+            <div class="form-group">
+                <label for="name" class="bold-label">Enter Your Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="service" class="bold-label">Select Service:</label>
+                <select id="service" name="service" required>
+                    <option value="Haircut">Haircut - $2.0</option>
+                    <option value="Shave">Shave - $1</option>
+                    <option value="Kids Haircut">Kids Haircut - $1.5</option>
+                    <option value="Hair Styling">Hair Styling - $4</option>
+                    <option value="Beard Grooming">Beard Grooming - $2.5</option>
+                    <option value="Older Haircut">Older Haircut - $3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date" class="bold-label">Select Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time" class="bold-label">Select Time:</label>
+                <input type="time" id="time" name="time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message" class="bold-label">Send Us a Message:</label>
+                <textarea id="message" name="message" placeholder="Write a message..." required></textarea>
+            </div>
+
+            <div id="price-display"></div> <!-- Section to display selected service price -->
+
+            <button type="submit" class="submit-btn" onclick="sendWhatsAppMessage()">Send Message via WhatsApp</button>
+        </form>
+    </div>
+
+    <script>
+        // Display price based on service selected
+        document.getElementById('service').addEventListener('change', function () {
+            const service = this.value;
+            let price = '';
+
+            // Set price based on the selected service
+            switch (service) {
+                case 'Haircut':
+                    price = '$2.0';
+                    break;
+                case 'Shave':
+                    price = '$1';
+                    break;
+                case 'Kids Haircut':
+                    price = '$1.5';
+                    break;
+                case 'Hair Styling':
+                    price = '$4';
+                    break;
+                case 'Beard Grooming':
+                    price = '$2.5';
+                    break;
+                case 'Older Haircut':
+                    price = '$3';
+                    break;
+                default:
+                    price = '';
+            }
+
+            // Display the price below the dropdown
+            document.getElementById('price-display').innerHTML = `<p><strong>Price:</strong> ${price}</p>`;
+        });
+
+        function sendWhatsAppMessage() {
+            const name = document.getElementById('name').value;
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+            let time = document.getElementById('time').value;
+
+            // Convert 24-hour time to 12-hour format with AM/PM
+            let [hours, minutes] = time.split(':');
+            hours = parseInt(hours, 10);
+            const isPM = hours >= 12;
+            const suffix = isPM ? 'PM' : 'AM';
+            if (hours > 12) hours -= 12;
+            if (hours === 0) hours = 12; // Handle 12 AM/PM case
+            time = `${hours}:${minutes} ${suffix}`;
+
+            const message = document.getElementById('message').value;
+
+            // Creating the WhatsApp message with dynamic inputs
+            const whatsappMessage = `Hi! Welcome to Xaaji Daahir Barber!
+
+We’re thrilled you’re interested in booking an appointment with us! Get ready to experience the best grooming services in town!
+
+Here’s what we’ve got for you so far:
+- Name: ${name}
+- Service: ${service}
+- Preferred Date: ${date}
+- Preferred Time: ${time}
+- Message: ${message}
+
+We can't wait to meet you and give you that fresh look! Whether it's a haircut, shave, or styling, we’ve got you covered!
+
+Feel free to ask any questions or share any special requests.
+
+Thanks for choosing Xaaji Daahir Barber. We’ll see you soon!
+
+Best regards,
+Xaaji Daahir Barber`;
+
+            // Encode the message for URL
+            const whatsappUrl = `https://wa.me/252637476049?text=${encodeURIComponent(whatsappMessage)}`;
+
+            // Redirecting to WhatsApp with the pre-filled message
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Xaaji Daahir Barber. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
